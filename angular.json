@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "projects": {
+    "npx-nx": {
+      "projectType": "application",
+      "root": "apps/npx-nx",
+      "sourceRoot": "apps/npx-nx/src",
+      "prefix": "npx-nx-study",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/npx-nx",
+            "index": "apps/npx-nx/src/index.html",
+            "main": "apps/npx-nx/src/main.ts",
+            "polyfills": "apps/npx-nx/src/polyfills.ts",
+            "tsConfig": "apps/npx-nx/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": ["apps/npx-nx/src/favicon.ico", "apps/npx-nx/src/assets"],
+            "styles": ["apps/npx-nx/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/npx-nx/src/environments/environment.ts",
+                  "with": "apps/npx-nx/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "npx-nx:build:production"
+            },
+            "development": {
+              "browserTarget": "npx-nx:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "npx-nx:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/npx-nx/src/**/*.ts",
+              "apps/npx-nx/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/npx-nx"],
+          "options": {
+            "jestConfig": "apps/npx-nx/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "npx-nx-e2e": {
+      "root": "apps/npx-nx-e2e",
+      "sourceRoot": "apps/npx-nx-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/npx-nx-e2e/cypress.json",
+            "tsConfig": "apps/npx-nx-e2e/tsconfig.e2e.json",
+            "devServerTarget": "npx-nx:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "npx-nx:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/npx-nx-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "defaultProject": "npx-nx"
+}
